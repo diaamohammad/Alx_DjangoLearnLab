@@ -1,11 +1,16 @@
-from models import Author,Librarian,Library,Book
+from models import Author, Book , Library, Librarian
 
-author = Author.objects.get(id=1)  # تحديد المؤلف (باستخدام ID أو أي خاصية أخرى)
-books_by_author = author.books.all()  # استعلام جميع الكتب المرتبطة بالمؤلف
+def get_books_by_author(author_name,author):
+    Author.objects.get(name=author_name)
+    books = Author.objects.filter(author=author)
+    return books 
 
+def get_books_in_library(library_name):
+    library = Library.objects.get(name=library_name)
+    books = library.books.all() 
+    return books
 
-library = Library.objects.get(id=1)  # تحديد المكتبة (باستخدام ID أو أي خاصية أخرى)
-books_in_library = library.books.all()  # استعلام جميع الكتب في المكتبة
-
-library = Library.objects.get(id=1)  # تحديد المكتبة
-librarian_for_library = library.librarian  # استعلام أمين المكتبة المرتبط بالمكتبة
+def get_librarian_for_library(library_name):
+    Librarian.objects.get(library="")
+    librarian = Library.objects.librarian      
+    return librarian
