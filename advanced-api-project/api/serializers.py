@@ -1,7 +1,7 @@
 from .models import Book,Author
 from rest_framework import serializers 
 
-class Bookserializer(serializers.ModelSerializer):
+class BookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
@@ -12,7 +12,7 @@ class Bookserializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("Publication year cannot be in the future")
             return attrs
 
-class AuthorSerializer(serializers.modelserializer):
+class AuthorSerializer(serializers.Modelserializer):
 
     books =Bookserializer(many=True, read_only=True)
     class Meta:
