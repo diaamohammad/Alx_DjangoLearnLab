@@ -7,7 +7,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from django_filters import rest_framework
 
-class ListView(viewsets.ModelViewSet):
+class ListView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -25,25 +25,23 @@ class ListView(viewsets.ModelViewSet):
     #     return queryset
     
     
-class DetailView(viewsets.ModelViewSet):
+class DetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     lookup_field = 'id'
     permission_classes = [IsAuthenticatedOrReadOnly]
     
-class CreateView(viewsets.ModelViewSet):
+class CreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated]
         
-    
-    
-class UpdateView(viewsets.ModelViewSet):
+class UpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated]
     
-class DeleteView(viewsets.ModelViewSet):
+class DeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated]
