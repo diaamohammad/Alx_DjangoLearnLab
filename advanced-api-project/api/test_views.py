@@ -8,9 +8,7 @@ from api.models import Book , Author
 # This Python class contains test cases for creating, retrieving, updating, and deleting books using
 # Django REST framework API testing.
 class BookAPITestCase(APITestCase):
-    urlpatterns = [
-        path('api/', include('api.urls')),
-        ]
+    
     def setUp(self):
         self.author = Author.objects.create(name='Test Author')
         self.client = APIClient()
