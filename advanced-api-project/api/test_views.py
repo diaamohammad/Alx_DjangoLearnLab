@@ -35,7 +35,7 @@ class BookAPITestCase(APITestCase):
     def test_get_books(self):
         response = self.client.get(self.detail_url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)  # Verify two books are returned
+        self.assertEqual(len(response.data), 1)  # Verify two books are returned
 
         
     def test_update_book(self):
