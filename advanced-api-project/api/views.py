@@ -14,7 +14,7 @@ class ListView(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend , filters.SearchFilter , filters.OrderingFilter]
     filterset_fields = ['title', 'author']
     search_fields = ['title', 'author']
-    orderinf_fields = ['title', 'publication_year']
+    ordering_fields = ['title', 'publication_year']
     ordering = ['title']
     
     # def get_queryset(self):

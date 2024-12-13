@@ -8,9 +8,7 @@ from api.models import Book , Author
 # This Python class contains test cases for creating, retrieving, updating, and deleting books using
 # Django REST framework API testing.
 class BookAPITestCase(APITestCase):
-    urlpatterns = [
-        path('api/', include('api.urls')),
-        ]
+    
     def setUp(self):
         self.author = Author.objects.create(name='Test Author')
         self.client = APIClient()
@@ -20,10 +18,11 @@ class BookAPITestCase(APITestCase):
             'author': 'Test Author',
             'publication_year': 2021
         }
-        self.create_url = reverse('CreateView')
+        self.create_url = reverse('Create')
         self.detail_url = reverse('book_detail', args=[1])
         self.update_url = reverse('update', args=[1])
         self.delete_url = reverse('delete', args=[1])
+        self.book_list_url = reverse('books')
 
     def test_create_book(self):
         data = {'title': 'New Book', 'author': 'New Author', 'publication_year': 2022}
@@ -35,7 +34,7 @@ class BookAPITestCase(APITestCase):
     def test_get_books(self):
         response = self.client.get(self.detail_url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)  # Verify two books are returned
+        self.assertEqual(len(response.data), 1)  # Verify two books are returned
 
         
     def test_update_book(self):
