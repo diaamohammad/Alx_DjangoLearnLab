@@ -7,30 +7,47 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from django_filters import rest_framework
 
-class BookListCreateView(generics.ListCreateAPIView):
+class ListView(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticated]  # للسماح للمستخدمين المسجلين فقط
-    filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
-    filterset_fields = ['author', 'publication_year']
-    search_fields = ['title', 'author__name']
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    filter_backends = [DjangoFilterBackend , filters.SearchFilter , filters.OrderingFilter]
+    filterset_fields = ['title', 'author']
+    search_fields = ['title', 'author']
     ordering_fields = ['title', 'publication_year']
-    ordering = ['title']  # الترتيب الافتراضي للنتائج
-
-# تفاصيل الكتاب وتحديثه وحذفه
-class BookRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    ordering = ['title']
+    
+    # def get_queryset(self):
+    #     queryset = Book.objects.all()
+    #     title = self.request.query_params.get('title')
+    #     if title is not None:
+    #         queryset = queryset.filter(title=title)
+    #     return queryset
+    
+    
+class DetailView(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticated]  # للسماح للمستخدمين المسجلين فقط
-
-# قائمة المؤلفين وإنشاء مؤلف جديد
-class AuthorListCreateView(generics.ListCreateAPIView):
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
-    permission_classes = [IsAuthenticated]  # للسماح للمستخدمين المسجلين فقط
-
-# تفاصيل المؤلف
-class AuthorRetrieveView(generics.RetrieveAPIView):
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
+    lookup_field = 'id'
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    
+class CreateView(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
     permission_classes = [IsAuthenticated]
+        
+    
+    
+class UpdateView(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]
+    
+class DeleteView(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]
+    
+class AuthorView(viewsets.ModelViewSet):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
