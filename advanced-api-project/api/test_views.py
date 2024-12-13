@@ -20,10 +20,11 @@ class BookAPITestCase(APITestCase):
             'author': 'Test Author',
             'publication_year': 2021
         }
-        self.create_url = reverse('CreateView')
+        self.create_url = reverse('Create')
         self.detail_url = reverse('book_detail', args=[1])
         self.update_url = reverse('update', args=[1])
         self.delete_url = reverse('delete', args=[1])
+        self.book_list_url = reverse('books')
 
     def test_create_book(self):
         data = {'title': 'New Book', 'author': 'New Author', 'publication_year': 2022}
