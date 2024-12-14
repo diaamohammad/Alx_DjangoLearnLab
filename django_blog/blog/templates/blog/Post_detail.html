@@ -1,5 +1,5 @@
-{% extends 'base.html' %}
-
+{% extends 'blog/base.html' %}
+{%load static %}
 {% block content %}
   <h2>{{ post.title }}</h2>
   <p>By {{ post.author }} on {{ post.created_at }}</p>
