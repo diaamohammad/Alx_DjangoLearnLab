@@ -12,11 +12,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 
 class CustomLoginView(LoginView):
 
-    template_name='login.html'
+    template_name='blog/login.html'
 
 class CustomLogoutView(LogoutView):
 
-    template_name='logout.html'
+    template_name='blog/logout.html'
 
 def register_view(request):
 
@@ -28,7 +28,7 @@ def register_view(request):
             return redirect('profile')
     else:
         form = CustomUserCreationForm
-    return render(request,'register.html',{'form':form})
+    return render(request,'blog/register.html',{'form':form})
 
 @login_required
 def profile_view(request):
@@ -38,17 +38,17 @@ def profile_view(request):
         user.email = request.POST.get('email')
         user.save()
         return redirect('profile')
-    return render(request,'profile.html',{'user':request.user})
+    return render(request,'blog/profile.html',{'user':request.user})
 
 
 class PostListView(ListView):
     model= Post
-    template_name = 'Post_List.html'
+    template_name = 'blog/Post_List.html'
     context_object_name = 'posts'
 
 class PostCreateView(CreateView):
     model = Post
-    template_name = 'Post_Create.html'
+    template_name = 'blog/Post_Create.html'
     fields = ['title','content']
     success_url = reverse_lazy('post-list')
 
@@ -58,12 +58,12 @@ class PostCreateView(CreateView):
 
 class PostDetailView(DetailView):
     model = Post
-    template_name = 'Post_detail.html'
+    template_name = 'blog/Post_detail.html'
     context_object_name = 'post'
 
 class PostUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = Post
-    template_name = 'Post_update.html'
+    template_name = 'blog/Post_update.html'
     fields = ['title','content']
     success_url = reverse_lazy('post-list')
     login_url = 'login'
@@ -74,7 +74,7 @@ class PostUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
 
 class PostDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
     model = Post
-    template_name = 'Post_delete.html'
+    template_name = 'blog/Post_delete.html'
     success_url = reverse_lazy('post-list')
     login_url = 'login'
 
@@ -91,5 +91,5 @@ def create_post(request):
             return redirect('post-list')
     else:
         form = PostForm()
-        return render(request,'Post_Create.html',{'form':form})
+        return render(request,'blog/Post_Create.html',{'form':form})
     
