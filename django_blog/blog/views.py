@@ -11,14 +11,14 @@ from django.contrib.auth.decorators import login_required
 # View for listing all posts
 class PostListView(ListView):
     model = Post
-    template_name = 'blog/Post_List.html'
+    template_name = 'blog/post_list.html'
     context_object_name = 'posts'
 
 
 # View for creating a new post
 class PostCreateView(CreateView):
     model = Post
-    template_name = 'blog/Post_Create.html'
+    template_name = 'blog/post_create.html'
     fields = ['title', 'content']
     success_url = reverse_lazy('post-list')
 
@@ -68,7 +68,7 @@ def create_post(request):
             return redirect('post-list')
     else:
         form = PostForm()
-    return render(request, 'blog/post_Create.html', {'form': form})
+    return render(request, 'blog/post_create.html', {'form': form})
 
 
 # Custom login view
