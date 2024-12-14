@@ -55,8 +55,8 @@ ROOT_URLCONF = 'django_blog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # هذا إذا كنت تخزن قوالب أخرى غير الخاصة بالتطبيقات
-        'APP_DIRS': True,  # يجب أن تكون مفعلة للبحث داخل مجلدات التطبيقات
+        'DIRS': [BASE_DIR / 'templates'],  
+        'APP_DIRS': True,  
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',

@@ -30,14 +30,14 @@ class PostCreateView(CreateView):
 # View for displaying a post's details
 class PostDetailView(DetailView):
     model = Post
-    template_name = 'blog/Post_detail.html'
+    template_name = 'blog/post_detail.html'
     context_object_name = 'post'
 
 
 # View for updating an existing post
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    template_name = 'blog/Post_update.html'
+    template_name = 'blog/post_update.html'
     fields = ['title', 'content']
     success_url = reverse_lazy('post-list')
     login_url = 'login'
@@ -50,7 +50,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 # View for deleting a post
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
-    template_name = 'blog/Post_delete.html'
+    template_name = 'blog/post_delete.html'
     success_url = reverse_lazy('post-list')
     login_url = 'login'
 
@@ -68,7 +68,7 @@ def create_post(request):
             return redirect('post-list')
     else:
         form = PostForm()
-    return render(request, 'blog/Post_Create.html', {'form': form})
+    return render(request, 'blog/post_Create.html', {'form': form})
 
 
 # Custom login view
