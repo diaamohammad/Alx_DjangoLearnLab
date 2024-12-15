@@ -150,3 +150,44 @@ def delete_comment(request, comment_id):
         comment.delete()
         return redirect('post_detail', post_id=post_id)
     return redirect('post_detail', post_id=comment.post.id)
+
+class CommentCreateView(CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/new_comment.html'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        post = get_object_or_404(Post, pk=self.kwargs['post_id'])
+        form.instance.post = post
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('post_detail', kwargs={'post_id': self.kwargs['post_id']})
+
+
+# تعديل تعليق باستخدام UpdateView
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/edit_comment.html'
+
+    def get_success_url(self):
+        return reverse_lazy('post_detail', kwargs={'post_id': self.object.post.id})
+
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author
+
+
+# حذف تعليق باستخدام DeleteView
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Comment
+    template_name = 'blog/delete_comment.html'
+
+    def get_success_url(self):
+        return reverse_lazy('post_detail', kwargs={'post_id': self.object.post.id})
+
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author

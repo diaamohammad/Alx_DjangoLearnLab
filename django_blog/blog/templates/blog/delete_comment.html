@@ -1,0 +1,6 @@
+<h1>هل أنت متأكد من حذف التعليق؟</h1>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">نعم، احذف</button>
+    <a href="{% url 'post_detail' post_id=object.post.id %}">إلغاء</a>
+</form>
