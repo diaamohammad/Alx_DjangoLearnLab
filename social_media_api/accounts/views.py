@@ -14,10 +14,9 @@ class RegisterApiView(APIView):
             serializer = UserModelSerializer(data=request.data)
             if serializer.is_vaild():
                 user=serializer.save()
-                token = Token.objects.create(user=user)
-                return Response({'message':'user created successfuly',
-                'token':token.key},
-                status=status.HTTP_201_CREATED) 
+                return Response({'message':'user created successfuly'},status=status.HTTP_201_CREATED)
+                
+                 
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 

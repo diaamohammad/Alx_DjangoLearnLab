@@ -1,14 +1,17 @@
-from .models import UserModel
 from rest_framework import serializers
+from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
+
+
 User = get_user_model()
 
-class UserModelSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
+    # تعريف حقل كلمة المرور كـ write_only
     password = serializers.CharField(write_only=True)
-    
+
     class Meta:
-        model = UserModel
-        fields = '__all__'
+        model = User
+        fields = ['username', 'email', 'password']
 
     def create(self, validated_data):
         # إنشاء المستخدم باستخدام create_user لضمان تشفير كلمة المرور
@@ -17,4 +20,8 @@ class UserModelSerializer(serializers.ModelSerializer):
             email=validated_data.get('email'),
             password=validated_data['password']
         )
+
+        # توليد توكن مرتبط بالمستخدم
+        Token.objects.create(user=user)
+
         return user
