@@ -1,27 +1,38 @@
 from rest_framework import serializers
-from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
+from rest_framework.authtoken.models import Token
 
 
-User = get_user_model()
 
-class UserSerializer(serializers.ModelSerializer):
-    # تعريف حقل كلمة المرور كـ write_only
-    password = serializers.CharField(write_only=True)
 
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    #bio = serializers.CharField()
     class Meta:
-        model = User
-        fields = ['username', 'email', 'password']
+        model = get_user_model()
+        fields = ['id', 'username', 'password', 'email', 'bio', 'profile_picture']
+        extra_kwargs = {'password': {'write_only': True}}
 
+    
+    def validate_username(self, value):
+        if get_user_model().objects.filter(username=value).exists():
+            raise serializers.ValidationError("Username is already taken.")
+        return value
+    
     def create(self, validated_data):
-        # إنشاء المستخدم باستخدام create_user لضمان تشفير كلمة المرور
-        user = User.objects.create_user(
+        # Ensure 'email' and 'bio' are handled correctly
+        email = validated_data.get('email')
+        bio = validated_data.get('bio', '')  # Default to empty string if bio is not provided
+
+        if not email:
+            raise serializers.ValidationError("Email is required.")
+
+        user = get_user_model().objects.create_user(
             username=validated_data['username'],
-            email=validated_data.get('email'),
-            password=validated_data['password']
+            password=validated_data['password'],
+            email=email,
+            bio=bio,
+            profile_picture=validated_data.get('profile_picture', None),
         )
-
-        # توليد توكن مرتبط بالمستخدم
         Token.objects.create(user=user)
-
         return user
