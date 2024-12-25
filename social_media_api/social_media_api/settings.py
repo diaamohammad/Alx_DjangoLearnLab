@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'accounts.UserModel'
+
 
 # Application definition
 
@@ -40,6 +42,8 @@ INSTALLED_APPS = [
     'accounts',
     'rest_framework.authtoken',
     'rest_framework',
+    'django_filters',
+    'posts'
 ]
 
 MIDDLEWARE = [

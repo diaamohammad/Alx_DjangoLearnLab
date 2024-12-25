@@ -3,9 +3,6 @@ from django.contrib.auth import get_user_model
 from rest_framework.authtoken.models import Token
 
 
-
-
-
 class CustomUserSerializer(serializers.ModelSerializer):
     #bio = serializers.CharField()
     class Meta:
@@ -20,10 +17,9 @@ class CustomUserSerializer(serializers.ModelSerializer):
         return value
     
     def create(self, validated_data):
-        # Ensure 'email' and 'bio' are handled correctly
+        
         email = validated_data.get('email')
-        bio = validated_data.get('bio', '')  # Default to empty string if bio is not provided
-
+        bio = validated_data.get('bio', '')  
         if not email:
             raise serializers.ValidationError("Email is required.")
 
