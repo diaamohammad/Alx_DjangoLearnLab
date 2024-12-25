@@ -3,7 +3,7 @@ from .views import CommentView,PostView
 
 router = DefaultRouter
 
-router.register(r'api/posts',PostView)
-router.register(r'api/comments',CommentView)
+router.register(r'posts',PostView)
+router.register(r'comments',CommentView)
 
 urlpatterns = router.urls
