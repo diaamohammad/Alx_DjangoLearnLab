@@ -7,6 +7,7 @@ from rest_framework import filters
 from rest_framework.permissions import IsAuthenticated
 from accounts.models import CustomUser
 from rest_framework.generics import ListAPIView
+from rest_framework import permissions 
 
 class PostView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]  
@@ -26,7 +27,7 @@ class CommentView(viewsets.ModelViewSet):
 
 class FeedAPIView(ListAPIView):
 
-    permission_class = [IsAuthenticated]
+    permission_class = [permissions.IsAuthenticated]
     serializer_class = PostSerializer
 
     def get_queryset(self):
