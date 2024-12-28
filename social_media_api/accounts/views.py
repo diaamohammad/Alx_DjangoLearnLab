@@ -5,9 +5,8 @@ from .models import CustomUser
 from django.contrib.auth import authenticate, login
 from rest_framework.views import APIView
 from .serializers import UserModelSerializer
-from rest_framework.permissions import IsAuthenticated
 from rest_framework import mixins, generics
-
+from rest_framework import permissions
 
 class RegisterApiView(APIView):
     
@@ -54,7 +53,7 @@ class ProfileApiView(APIView):
 
 class FollowUser(generics.GenericAPIView, mixins.CreateModelMixin):
      
-     permission_class = [IsAuthenticated]
+     permission_class = [permissions.IsAuthenticated]
      
      def POST(self,request,user_id,*args,**kwargs):
           
