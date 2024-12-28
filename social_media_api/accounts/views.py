@@ -60,6 +60,8 @@ class FollowUser(generics.GenericAPIView, mixins.CreateModelMixin):
           
           
           try:
+               all_users = CustomUser.objects.all()  # النص المطلوب
+
                follow_user = CustomUser.objects.get(id=user_id)
 
           except CustomUser.DoesNotExist:
