@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
+from .models import UserModel
 from django.contrib.auth import authenticate, login
 from rest_framework.views import APIView
 from .serializers import UserModelSerializer
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import mixins, generics
 
 
 class RegisterApiView(APIView):
@@ -28,10 +29,10 @@ class LoginApiView(APIView):
 
         user = authenticate(username=username,password=password)
         if user is not None:
-            token, created=Token.objects.get_or_create(user=user)
+            
             login(request,user)
             return Response({'message':'user loged in successfuly',
-            "token":token.key},status=status.HTTP_200_OK)
+            },status=status.HTTP_200_OK)
         return Response({'message':'authencation failed'},status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -49,3 +50,37 @@ class ProfileApiView(APIView):
             serializer.save()
             return Response({'message':'profile updated successfuly'},status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST) 
+    
+
+class FollowUser(generics.GenericAPIView, mixins.CreateModelMixin):
+     
+     permission_class = [IsAuthenticated]
+     
+     def POST(self,request,user_id,*args,**kwargs):
+          
+          
+          try:
+               follow_user = UserModel.objects.get(id=user_id)
+
+          except UserModel.DoesNotExist:
+               return Response({'error':'user not found'},status=status.HTTP_401_UNAUTHORIZED)
+          
+          request.user.following.add(follow_user)
+          return Response({"message":f"now you following{follow_user.username}"})
+     
+class UnFollowUser(generics.GenericAPIView):
+     permission_class = [IsAuthenticated]
+
+     def POST(self,request,user_id,*args,**kwargs):
+          
+          try:
+               follow_user = UserModel.objects.get(id=user_id)
+          
+          except UserModel.DoesNotExist:
+               return Response({"error":"user not found"},status=status.HTTP_401_UNAUTHORIZED)
+          
+          return request.user.remove(follow_user)
+          return Response({"message": f"Unfollowed {user_to_unfollow.username}"}, status=status.HTTP_200_OK)
+               
+          
+          
