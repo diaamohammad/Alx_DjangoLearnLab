@@ -5,7 +5,7 @@ from .serializers import PostSerializer,CommentSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework.permissions import IsAuthenticated
-from accounts.models import UserModel
+from accounts.models import CustomUser
 from rest_framework.generics import ListAPIView
 
 class PostView(viewsets.ModelViewSet):
