@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Post,Comment
+from .models import Post,Comment,like
 
 class CommentSerializer(serializers.ModelSerializer):
 
@@ -23,3 +23,10 @@ class PostSerializer(serializers.ModelSerializer):
         if title and len(title) >10:
             raise serializers.ValidationError('must be longer ')
         return data
+
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = like
+        fields = ['user', 'post', 'timestamp']
