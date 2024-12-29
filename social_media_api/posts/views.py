@@ -11,8 +11,9 @@ from rest_framework import permissions,status
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.contrib.contenttypes.models import ContentType
-from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from notifications.models import  Notification
+from rest_framework import generics
 
 class PostView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]  
@@ -46,14 +47,13 @@ class FeedAPIView(ListAPIView):
 
 
 
+@api_view(['POST'])
 def like_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+    post = generics.get_object_or_404(Post, pk=pk)
     
     like, created = Like.objects.get_or_create(
         user=request.user,
         post=post,
-        content_type=ContentType.objects.get_for_model(Post),
-        object_id=post.pk
     )
     
     if created:
@@ -62,19 +62,18 @@ def like_post(request, pk):
             user=post.user,
             message=message,
         )
-    
+        return Response({"message": "Post liked successfully!"}, status=200)
+    else:
+        return Response({"message": "You already liked this post."}, status=400)
 
-    return Response({"message": "You already liked this post."}, status=400)
-
+@api_view(['POST'])
 def unlike_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+    post = generics.get_object_or_404(Post, pk=pk)
     
     try:
         like = Like.objects.get(
             user=request.user,
             post=post,
-            content_type=ContentType.objects.get_for_model(Post),
-            object_id=post.pk
         )
         like.delete()
         return Response({"message": "Post unliked successfully!"}, status=200)
