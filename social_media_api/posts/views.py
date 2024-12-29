@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .models import Post,Comment,like
+from .models import Post,Comment,Like
 from .serializers import PostSerializer,CommentSerializer,LikeSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
@@ -53,12 +53,12 @@ class LikePostView(APIView):
         post=get_object_or_404(Post,id=post_id)
         content_type = ContentType.objects.get_for_model(post)
 
-        if like.objects.filter(user=request.user,content_type=content_type,object_id=post.id).exists():
+        if Like.objects.filter(user=request.user,content_type=content_type,object_id=post.id).exists():
 
         
             return Response({'message': 'you liked this post befor'}, status=status.HTTP_400_BAD_REQUEST)
         
-        like.objects.create(user=request.user,content_type=content_type,object_id=post.id)
+        Like.objects.create(user=request.user,content_type=content_type,object_id=post.id)
 
         return Response({'message': 'already liked'}, status=status.HTTP_200_OK)
         
@@ -70,13 +70,13 @@ class UnlikePostView(APIView):
         post = get_object_or_404(Post, id=post_id)
         content_type = ContentType.objects.get_for_model(post)
 
-        like = like.objects.filter(user=request.user, content_type=content_type, object_id=post.id).first()
+        like = Like.objects.filter(user=request.user, content_type=content_type, object_id=post.id).first()
         
         if not like:
             return Response({'message': 'you dont liked this post'}, status=status.HTTP_400_BAD_REQUEST)
 
         
-        like.delete()
+        Like.delete()
 
         
 
