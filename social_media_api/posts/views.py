@@ -53,7 +53,7 @@ def like_post(request, pk):
     
     like, created = Like.objects.get_or_create(
         user=request.user,
-        post=post,
+        post=post
     )
     
     if created:
