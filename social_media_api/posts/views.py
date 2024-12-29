@@ -79,3 +79,5 @@ def unlike_post(request, pk):
         return Response({"message": "Post unliked successfully!"}, status=200)
     except Like.DoesNotExist:
         return Response({"message": "You haven't liked this post yet."}, status=400)
+    
+    ["Like.objects.get_or_create(user=request.user, post=post)"]
