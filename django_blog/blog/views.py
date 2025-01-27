@@ -225,32 +225,3 @@ def search_posts(request):
     return render(request, 'blog/post_list.html', {'posts': posts})
 
 
-def post_list(request):
-    query = request.GET.get('q', '')
-    if query:
-        posts = Post.objects.filter(
-            Q(title__icontains=query) |
-            Q(content__icontains=query) |
-            Q(tags__name__icontains=query)
-        ).distinct()
-    else:
-        posts = Post.objects.all()
-    return render(request, 'blog/post_list.html', {'posts': posts})
-
-# عرض المنشورات المرتبطة بوسم معين
-def posts_by_tag(request, tag_name):
-    posts = Post.objects.filter(tags__name=tag_name)
-    return render(request, 'blog/posts_by_tag.html', {'posts': posts, 'tag_name': tag_name})
-
-# معالجة استعلامات البحث
-def search_posts(request):
-    query = request.GET.get('q', '')
-    if query:
-        posts = Post.objects.filter(
-            Q(title__icontains=query) |
-            Q(content__icontains=query) |
-            Q(tags__name__icontains=query)
-        ).distinct()
-    else:
-        posts = Post.objects.all()
-    return render(request, 'blog/post_list.html', {'posts': posts})
